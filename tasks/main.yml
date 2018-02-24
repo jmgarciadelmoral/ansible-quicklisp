@@ -1,0 +1,27 @@
+- name: download quicklisp
+  get_url:
+    url: https://beta.quicklisp.org/quicklisp.lisp
+    dest: /opt/quicklisp.lisp
+
+- name: run quicklisp.lisp
+  shell: |
+     echo "echo '(quicklisp-quickstart:install)' |  ccl64 --load quicklisp.lisp" > /tmp/install_quicklisp
+     chmod 775  /tmp/install_quicklisp
+     su turtl -c /tmp/install_quicklisp
+  args:
+    creates: '/tmp/install_quicklisp'
+
+- name: download asdf
+  get_url:
+    url: https://common-lisp.net/project/asdf/asdf.lisp
+    dest: /tmp/asdf.lisp
+  
+- name: run asdf.lisp
+  shell: |
+     echo "echo '(load (compile-file "asdf.lisp"))' |  ccl64 --load quicklisp.lisp" > /tmp/install_asdf
+     chmod 775  /tmp/install_asdf
+     su turtl -c /tmp/install_asdf
+  args:
+    creates: '/tmp/install_asdf'
+
+
